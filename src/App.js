@@ -1,31 +1,31 @@
-import { useDispatch, useSelector } from "react-redux";
-import { fetchTodos } from "./redux/slice/todoSlice";
-import "./App.css";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route ,Navigate } from 'react-router-dom';
+import LoginPage from './components/login/login';
+import HomePage from './components/Home/HomePage'; // Example protected page
+import ProtectedRoute from './components/ProtectedRoute';
 
-import Product from "./product/product";
-
-function App() {
-  const dispatch = useDispatch();
-  const state = useSelector((state) => state);
-
-  console.log("state", state);
+const App = () => {
   return (
-    <div className="App">
-      <button onClick={(e) => dispatch(fetchTodos())}>Click</button>
-      <br />
-      {state?.todo?.isLoading && (
-        <>
-          <b>Loading...</b>
-        </>
-      )}
-      {state?.todo?.data?.map((i) => {
-        return <li>{i.title}</li>;
-      })}
-      <div>
-        <Product />
-      </div>
-    </div>
+    <Router>
+      <Routes>
+        {/* Public Route */}
+        <Route path="/login" element={<LoginPage />} />
+
+        {/* Protected Route */}
+        <Route
+          path="/home"
+          element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Default Route */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;

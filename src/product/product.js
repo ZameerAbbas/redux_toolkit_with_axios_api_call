@@ -4,7 +4,7 @@ import { productApi } from '../redux/slice/productSlice';
 
 const Product = () => {
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.product.data);
+  const productList = useSelector((state) => state.product.ProductEntities);
 
   useEffect(() => {
     dispatch(productApi({}));

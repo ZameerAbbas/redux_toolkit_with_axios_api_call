@@ -9,7 +9,7 @@ const productSlice = createSlice({
     name: "product",
     initialState: {
         isLoading: false,
-        data: [],
+        ProductEntities: [],
         isError: false
     },
     extraReducers: (builder) => {
@@ -18,7 +18,7 @@ const productSlice = createSlice({
         })
         builder.addCase(productApi.fulfilled, (state, action) => {
             state.isLoading = false;
-            state.data = action.payload;
+            state.ProductEntities = action.payload;
         })
         builder.addCase(productApi.rejected, (state, action) => {
             state.isError = true;

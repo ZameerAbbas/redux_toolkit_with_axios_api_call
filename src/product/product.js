@@ -4,18 +4,20 @@ import { productApi } from '../redux/slice/productSlice';
 
 const Product = () => {
   const dispatch = useDispatch();
-  const state = useSelector((state) => state.product.data);
+  const productList = useSelector((state) => state.product.data);
 
   useEffect(() => {
     dispatch(productApi({}));
   }, [dispatch]);
 
+
+  console.log("productList",productList)
   return (
     <div>
       <h1>Product List</h1>
-      {state ? (
+      {productList ? (
         <ul>
-          {state.map((product, index) => (
+          {productList.products.map((product, index) => (
             <li key={index}>{product.title}</li>
           ))}
         </ul>

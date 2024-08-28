@@ -1,0 +1,9 @@
+// auth
+auth login and signup with firebase
+//Database
+data base with firebase realtime Database
+//
+redux toolkit
+//
+three js animations
+

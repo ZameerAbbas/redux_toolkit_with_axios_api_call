@@ -1,63 +1,73 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { auth } from '../../components/firebaseConfig'; 
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 
 
-export const loginApi = createAsyncThunk("auth/login", async (credentials) => {
-  const res = await axios.post("https://dummyjson.com/auth/login", credentials, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-  localStorage.setItem('token', res.data.token);
-  return res.data; 
+export const signUpApi = createAsyncThunk(
+  'auth/signUp',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const loginApi = createAsyncThunk(
+  'auth/login',
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return userCredential.user;
+    } catch (error) {
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+export const logoutApi = createAsyncThunk('auth/logout', async () => {
+  await signOut(auth);
 });
 
-const token1 = localStorage.getItem('token');
-export const fetchUserData = createAsyncThunk(
-    "auth/fetchUserData",
-    async () => {
-      const res = await axios.get("https://dummyjson.com/auth/me", {
-        headers: {
-          'Authorization': `Bearer ${token1}`,
-        },
-      });
-      return res.data;
-    }
-  );
-
 const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: {
+    user: null,
     isLoading: false,
-    loginData: null, 
-    loginError: null,
-    userData: null, 
-    userDataError: null,
+    error: null,
   },
+  reducers: {},
   extraReducers: (builder) => {
-    
-    builder.addCase(loginApi.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(loginApi.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.loginData = action.payload;
-      localStorage.setItem('token', action.payload.token);
-    });
-    builder.addCase(loginApi.rejected, (state, action) => {
-      state.isLoading = false;
-      state.loginError = action.error.message;
-    });
-    builder.addCase(fetchUserData.pending, (state) => {
+    builder
+      .addCase(signUpApi.pending, (state) => {
         state.isLoading = true;
-      });
-      builder.addCase(fetchUserData.fulfilled, (state, action) => {
+        state.error = null;
+      })
+      .addCase(signUpApi.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.userData = action.payload;
-      });
-      builder.addCase(fetchUserData.rejected, (state, action) => {
+        state.user = action.payload;
+      })
+      .addCase(signUpApi.rejected, (state, action) => {
         state.isLoading = false;
-        state.userDataError = action.error.message;
+        state.error = action.payload;
+      })
+      .addCase(loginApi.pending, (state) => {
+        state.isLoading = true;
+        state.error = null;
+      })
+      .addCase(loginApi.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.user = action.payload;
+      })
+      .addCase(loginApi.rejected, (state, action) => {
+        state.isLoading = false;
+        state.error = action.payload;
+      })
+      .addCase(logoutApi.fulfilled, (state) => {
+        state.user = null;
       });
   },
 });

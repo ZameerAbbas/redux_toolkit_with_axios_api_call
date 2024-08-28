@@ -1,12 +1,10 @@
-import { configureStore } from '@reduxjs/toolkit';
-import todoReducer from './slice/todoSlice'
-import productReducer from './slice/productSlice'
-import authReducer  from "./slice/authSlice"
+import { configureStore } from "@reduxjs/toolkit";
 
+import authReducer from "./slice/authSlice";
+import realtimeDBSlice from "./slice/databaseSlice";
 export const store = configureStore({
-    reducer: {
-        todo: todoReducer,
-        product: productReducer,
-        auth: authReducer 
-    }
+  reducer: {
+    auth: authReducer,
+    firestore: realtimeDBSlice,
+  },
 });

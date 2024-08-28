@@ -1,29 +1,22 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { productApi } from '../../redux/slice/productSlice';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchDataFromRealtimeDB } from "../../redux/slice/databaseSlice";
 
 const Product = () => {
   const dispatch = useDispatch();
-  const productList = useSelector((state) => state.product.ProductEntities);
+  const data = useSelector((state) => state.firestore.data);
 
   useEffect(() => {
-    dispatch(productApi({}));
+    dispatch(fetchDataFromRealtimeDB());
   }, [dispatch]);
 
-
-  console.log("productList",productList)
+  console.log("data",data)
   return (
     <div>
-      <h1>Product List</h1>
-      {productList ? (
-        <ul>
-          {productList.products.map((product, index) => (
-            <li key={index}>{product.title}</li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading products...</p>
-      )}
+      <h1>Firestore Data</h1>
+      <ul>
+        
+      </ul>
     </div>
   );
 };

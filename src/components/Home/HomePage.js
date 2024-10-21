@@ -1,7 +1,16 @@
 import React from "react";
 import Product from "../product/product"
 
+import { useSelector } from 'react-redux';
+
 const HomePage = () => {
+
+  // eslint-disable-next-line no-undef
+  const user = useSelector((state) => state.auth.user);
+  console.log("user",user.providerData) 
+
+
+
   return (
     <div>
       <h1>Welcome to the Protected Home Page!</h1>

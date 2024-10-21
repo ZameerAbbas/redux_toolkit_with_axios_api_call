@@ -17,7 +17,7 @@ const App = () => {
         {/* Public Route */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignUpPage />} />
-        {/* Protected Route */}
+ 
         <Route
           path="/home"
           element={
@@ -27,7 +27,7 @@ const App = () => {
           }
         />
 
-        {/* Default Route */}
+
         <Route path="*" element={<Navigate to="/login" />} />
       </Routes>
     </Router>

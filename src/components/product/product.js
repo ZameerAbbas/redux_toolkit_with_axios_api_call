@@ -4,7 +4,7 @@ import { fetchDataFromRealtimeDB } from "../../redux/slice/databaseSlice";
 
 const Product = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.firestore.data);
+  const  data = useSelector((state) => state.realtimeDB.data);
 
   useEffect(() => {
     dispatch(fetchDataFromRealtimeDB());
@@ -14,8 +14,12 @@ const Product = () => {
   return (
     <div>
       <h1>Firestore Data</h1>
-      <ul>
-        
+      <ul >
+      {data.map((item) => (
+          <li key={item.id} className="bg-red-600">
+            {item.availabilityStatus} 
+          </li>
+        ))}
       </ul>
     </div>
   );

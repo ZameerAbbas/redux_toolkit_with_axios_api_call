@@ -15,7 +15,7 @@ const persistConfig = {
 // Combine your reducers
 const rootReducer = combineReducers({
   auth: authReducer,
-  firestore: realtimeDBSlice,
+  realtimeDB: realtimeDBSlice,
 });
 
 // Create the persisted reducer

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { getDatabase, ref, get } from "firebase/database"; 
-import { db } from "../../components/firebaseConfig"; // Ensure this is configured for Realtime Database
+import { db } from "../../components/firebaseConfig"; 
 
 export const fetchDataFromRealtimeDB = createAsyncThunk(
   "realtimeDB/fetchData",
@@ -14,6 +14,7 @@ export const fetchDataFromRealtimeDB = createAsyncThunk(
           id: key,
           ...data[key],
         })); 
+        
         return formattedData;
       } else {
         return rejectWithValue("No data found");
